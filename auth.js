@@ -6,17 +6,18 @@ function checkAuth() {
     const role = localStorage.getItem('auth_role');
     const username = localStorage.getItem('auth_username');
     
-    const path = window.location.pathname;
-    const currentPage = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+    const path = window.location.pathname.toLowerCase();
+    const isLoginPage = path.includes('login');
+    const isResellerPage = path.includes('reseller');
     
     if (!token) {
-        if (currentPage !== 'login.html') {
+        if (!isLoginPage) {
             window.location.href = 'login.html';
         }
         return null;
     }
     
-    if (currentPage === 'login.html') {
+    if (isLoginPage) {
         if (role === 'admin') {
             window.location.href = 'index.html';
         } else {
@@ -26,15 +27,11 @@ function checkAuth() {
     }
     
     // Scoping check
-    if (currentPage === 'index.html' && role !== 'admin') {
+    if (!isResellerPage && role !== 'admin') {
         window.location.href = 'reseller.html';
         return null;
     }
-    if (currentPage === 'api_management.html' && role !== 'admin') {
-        window.location.href = 'reseller.html';
-        return null;
-    }
-    if (currentPage === 'reseller.html' && role === 'admin') {
+    if (isResellerPage && role === 'admin') {
         window.location.href = 'index.html';
         return null;
     }
