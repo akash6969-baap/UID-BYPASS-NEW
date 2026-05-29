@@ -1,4 +1,6 @@
-const API_BASE = "http://54.210.158.98:5000"; // Connected to live VPS backend
+const API_BASE = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+    ? "http://54.210.158.98:5000"
+    : ""; // Relative path on production (Vercel will proxy it via vercel.json)
 
 // Helper to check authentication
 function checkAuth() {
