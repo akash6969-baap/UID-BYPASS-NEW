@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
+    { "source": "/api/:path*", "destination": "http://54.210.158.98:5000/api/:path*" },
     { "source": "/login", "destination": "/login.html" },
     { "source": "/reseller", "destination": "/reseller.html" },
     { "source": "/", "destination": "/index.html" }
