@@ -580,6 +580,154 @@
                 grid-column: span 1;
             }
         }
+
+        /* ── DEVICE SPOOFER STYLES ─────────────────────────── */
+        .spoofer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        @media (max-width: 1000px) { .spoofer-grid { grid-template-columns: 1fr; } }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .toggle-row:last-child { border-bottom: none; }
+        .toggle-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .toggle-label strong { font-size: 0.9rem; color: var(--text-main); }
+        .toggle-label small  { font-size: 0.75rem; color: var(--text-muted); }
+
+        .toggle-switch {
+            position: relative;
+            width: 46px;
+            height: 26px;
+            cursor: pointer;
+        }
+        .toggle-switch input { display: none; }
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.08);
+            border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.25s ease;
+        }
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--text-muted);
+            border-radius: 50%;
+            transition: all 0.25s ease;
+        }
+        .toggle-switch input:checked + .toggle-slider {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: var(--accent);
+        }
+        .toggle-switch input:checked + .toggle-slider::before {
+            left: calc(100% - 21px);
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .device-preview-card {
+            background: linear-gradient(135deg, rgba(239,68,68,0.06) 0%, rgba(20,20,25,0.4) 100%);
+            border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 0.85rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .device-preview-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(239,68,68,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .device-preview-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            margin-bottom: 0.85rem;
+        }
+        .device-preview-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+        .device-preview-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .device-spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.8rem;
+        }
+        .device-spec-key   { color: var(--text-muted); }
+        .device-spec-value { color: var(--text-main); font-weight: 500; font-family: 'Outfit', monospace; }
+
+        .spoofer-status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        .spoofer-status-chip.on  { background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.25); }
+        .spoofer-status-chip.off { background: rgba(239,68,68,0.08); color: var(--accent);  border: 1px solid rgba(239,68,68,0.2); }
+        .spoofer-status-chip::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        .device-table tbody tr:hover td { background: rgba(239,68,68,0.02); cursor: default; }
+        .btn-sm {
+            width: auto !important;
+            padding: 0.4rem 0.9rem !important;
+            font-size: 0.78rem !important;
+        }
+        .btn-outline {
+            background: transparent !important;
+            color: var(--accent) !important;
+            border: 1px solid rgba(239,68,68,0.3) !important;
+            box-shadow: none !important;
+        }
+        .btn-outline:hover {
+            background: rgba(239,68,68,0.08) !important;
+            box-shadow: none !important;
+        }
     </style>
 </head>
 <body>
@@ -624,6 +772,13 @@
             <li id="nav-logs" class="nav-item" onclick="switchTab('logs')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                 System Logs
+            </li>
+
+            <li class="nav-section-title">Advanced Tools</li>
+
+            <li id="nav-spoofer" class="nav-item" onclick="switchTab('spoofer')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18"/><path d="M9 7h6M9 11h4"/></svg>
+                Device Spoofer
             </li>
         </ul>
 
@@ -942,6 +1097,131 @@ Body: {
                     </div>
                 </div>
 
+                <!-- TAB CONTENT 6: DEVICE SPOOFER -->
+                <div id="tab-spoofer" class="tab-content">
+                    <!-- HEADER BANNER -->
+                    <div class="dashboard-welcome" style="margin-bottom:2rem; background: linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(16,16,20,0.5) 100%);">
+                        <div class="welcome-text">
+                            <h3 style="display:flex;align-items:center;gap:0.6rem;">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h4"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
+                                Device Spoofer Control
+                            </h3>
+                            <p>Inject real Android device fingerprints into every MajorLogin interception. Rotates per-login for maximum anti-detection.</p>
+                        </div>
+                        <div id="spooferStatusChip" class="spoofer-status-chip off">LOADING...</div>
+                    </div>
+
+                    <div class="spoofer-grid">
+                        <!-- LEFT: Config Panel -->
+                        <div class="panel">
+                            <h2 class="panel-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                                Spoofer Configuration
+                            </h2>
+
+                            <div class="toggle-row">
+                                <div class="toggle-label">
+                                    <strong>Enable Device Spoofer</strong>
+                                    <small>Inject device fingerprint into every login request</small>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="spooferEnabled" onchange="saveSpooferConfig()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="toggle-row">
+                                <div class="toggle-label">
+                                    <strong>IMEI Spoofing</strong>
+                                    <small>Inject a Luhn-valid random IMEI into each request</small>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="spooferImei" onchange="saveSpooferConfig()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="toggle-row">
+                                <div class="toggle-label">
+                                    <strong>Rotate Android ID</strong>
+                                    <small>Change Android device ID per session</small>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="spooferRotate" onchange="saveSpooferConfig()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="form-group" style="margin-top:1.5rem;">
+                                <label for="spooferMode">Spoof Mode</label>
+                                <select id="spooferMode" onchange="onModeChange()">
+                                    <option value="random">🎲 Random — Different device per login</option>
+                                    <option value="fixed">📌 Fixed — Always same device</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="fixedDeviceGroup" style="display:none;">
+                                <label for="spooferFixed">Fixed Device Model</label>
+                                <select id="spooferFixed" onchange="saveSpooferConfig()">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+
+                            <div style="display:flex;gap:0.75rem;margin-top:1.25rem;">
+                                <button id="btnPreviewDevice" onclick="previewDevice()" class="btn-outline btn-sm" style="flex:1;">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    Preview Next
+                                </button>
+                                <button onclick="resetSpoofer()" class="btn-outline btn-sm" style="flex:1;color:#a1a1aa;border-color:rgba(255,255,255,0.1);">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.33"/></svg>
+                                    Reset Defaults
+                                </button>
+                            </div>
+
+                            <!-- Live Preview Card -->
+                            <div class="device-preview-card" id="devicePreviewCard" style="display:none;">
+                                <div class="device-preview-title">🤖 Active Spoof Profile</div>
+                                <div class="device-preview-name" id="pvName">—</div>
+                                <div class="device-preview-sub" id="pvSub">—</div>
+                                <div class="device-spec-row"><span class="device-spec-key">Build ID</span><span class="device-spec-value" id="pvBuild">—</span></div>
+                                <div class="device-spec-row"><span class="device-spec-key">CPU ABI</span><span class="device-spec-value" id="pvCpu">—</span></div>
+                                <div class="device-spec-row"><span class="device-spec-key">Resolution</span><span class="device-spec-value" id="pvRes">—</span></div>
+                                <div class="device-spec-row"><span class="device-spec-key">IMEI</span><span class="device-spec-value" id="pvImei">—</span></div>
+                                <div class="device-spec-row" style="border-top:1px solid rgba(239,68,68,0.15);margin-top:0.5rem;padding-top:0.75rem;">
+                                    <span class="device-spec-key">Mode</span>
+                                    <span class="device-spec-value" id="pvMode" style="color:var(--accent);">—</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: Device Table -->
+                        <div class="panel">
+                            <h2 class="panel-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                                Available Device Profiles
+                                <span id="deviceCount" style="margin-left:auto;font-size:0.75rem;color:var(--text-muted);font-weight:400;">Loading...</span>
+                            </h2>
+                            <div class="table-container">
+                                <table class="device-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Brand</th>
+                                            <th>Model</th>
+                                            <th>Android</th>
+                                            <th>RAM</th>
+                                            <th>Resolution</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="deviceTableBody">
+                                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:2rem;">Loading devices...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END DEVICE SPOOFER TAB -->
+
             </div>
         </div>
     </div>
@@ -970,9 +1250,11 @@ Body: {
                 'whitelist': 'Whitelist Control',
                 'resellers': 'Reseller Accounts Management',
                 'apikeys': 'API Key Integration Config',
-                'logs': 'Recent System Audit Logs'
+                'logs': 'Recent System Audit Logs',
+                'spoofer': '🤖 Device Spoofer Control'
             };
             document.getElementById('navbarPageTitle').textContent = pageTitles[tabId] || 'Control Panel';
+            if (tabId === 'spoofer') loadSpoofer();
             
             // Load respective content
             if (tabId === 'apikeys') {
@@ -1406,6 +1688,140 @@ Body: {
                 console.error('Error fetching logs:', error);
             }
         }
+
+        // ── DEVICE SPOOFER FUNCTIONS ───────────────────────────────
+        let _spooferDevices = [];
+
+        async function loadSpoofer() {
+            try {
+                const res = await apiFetch('/api/spoofer');
+                if (!res.ok) return;
+                const data = await res.json();
+                const cfg  = data.config || {};
+                _spooferDevices = data.devices || [];
+
+                // Apply toggles
+                document.getElementById('spooferEnabled').checked = cfg.enabled !== false;
+                document.getElementById('spooferImei').checked    = cfg.spoof_imei !== false;
+                document.getElementById('spooferRotate').checked  = cfg.rotate_android_id !== false;
+
+                // Mode
+                const modeEl = document.getElementById('spooferMode');
+                modeEl.value = cfg.mode || 'random';
+                document.getElementById('fixedDeviceGroup').style.display = cfg.mode === 'fixed' ? 'block' : 'none';
+
+                // Populate fixed device dropdown
+                const fixedSel = document.getElementById('spooferFixed');
+                fixedSel.innerHTML = '';
+                _spooferDevices.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.model;
+                    opt.textContent = `${d.brand} ${d.model} (Android ${d.android_version})`;
+                    if (d.model === cfg.fixed_device_model) opt.selected = true;
+                    fixedSel.appendChild(opt);
+                });
+
+                // Status chip
+                const chip = document.getElementById('spooferStatusChip');
+                if (cfg.enabled !== false) {
+                    chip.textContent = `● ACTIVE \u2014 ${(cfg.mode || 'random').toUpperCase()} MODE`;
+                    chip.className = 'spoofer-status-chip on';
+                } else {
+                    chip.textContent = '● DISABLED';
+                    chip.className = 'spoofer-status-chip off';
+                }
+
+                // Populate device table
+                populateDeviceTable(_spooferDevices);
+                document.getElementById('deviceCount').textContent = `${_spooferDevices.length} devices available`;
+
+            } catch(e) {
+                console.error('Spoofer load error:', e);
+                showToast('Failed to load Device Spoofer', true);
+            }
+        }
+
+        function onModeChange() {
+            const mode = document.getElementById('spooferMode').value;
+            document.getElementById('fixedDeviceGroup').style.display = mode === 'fixed' ? 'block' : 'none';
+            saveSpooferConfig();
+        }
+
+        async function saveSpooferConfig() {
+            const payload = {
+                enabled:           document.getElementById('spooferEnabled').checked,
+                spoof_imei:        document.getElementById('spooferImei').checked,
+                rotate_android_id: document.getElementById('spooferRotate').checked,
+                mode:              document.getElementById('spooferMode').value,
+                fixed_device_model: document.getElementById('spooferFixed').value
+            };
+            try {
+                const res = await apiFetch('/api/spoofer', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+                const result = await res.json();
+                if (res.ok) {
+                    showToast('Spoofer config saved ✔');
+                    const chip = document.getElementById('spooferStatusChip');
+                    if (payload.enabled) {
+                        chip.textContent = `● ACTIVE \u2014 ${payload.mode.toUpperCase()} MODE`;
+                        chip.className = 'spoofer-status-chip on';
+                    } else {
+                        chip.textContent = '● DISABLED';
+                        chip.className = 'spoofer-status-chip off';
+                    }
+                } else {
+                    showToast(result.error || 'Save failed', true);
+                }
+            } catch(e) { showToast('Network error', true); }
+        }
+
+        async function previewDevice() {
+            try {
+                const res = await apiFetch('/api/spoofer/preview');
+                if (!res.ok) { showToast('Preview unavailable', true); return; }
+                const data = await res.json();
+                const p = data.profile || {};
+                document.getElementById('pvName').textContent  = `${p.brand || ''} ${p.model || ''}`;
+                document.getElementById('pvSub').textContent   = `Android ${p.android || '?'} \u2022 ${p.resolution || '?'} \u2022 ${p.cpu || '?'}`;
+                document.getElementById('pvBuild').textContent = p.build  || '—';
+                document.getElementById('pvCpu').textContent   = p.cpu    || '—';
+                document.getElementById('pvRes').textContent   = p.resolution || '—';
+                document.getElementById('pvImei').textContent  = p.imei   || 'Disabled';
+                document.getElementById('pvMode').textContent  = (data.mode || 'random').toUpperCase();
+                const card = document.getElementById('devicePreviewCard');
+                card.style.display = 'block';
+                card.style.animation = 'fadeIn 0.25s ease-out';
+            } catch(e) { showToast('Preview failed', true); }
+        }
+
+        async function resetSpoofer() {
+            if (!confirm('Reset Device Spoofer to default settings?')) return;
+            try {
+                const res = await apiFetch('/api/spoofer/reset', { method: 'POST' });
+                if (res.ok) { showToast('Spoofer reset to defaults'); loadSpoofer(); }
+                else { showToast('Reset failed', true); }
+            } catch(e) { showToast('Network error', true); }
+        }
+
+        function populateDeviceTable(devices) {
+            const tbody = document.getElementById('deviceTableBody');
+            if (!devices || devices.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:2rem;">No devices available</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = '';
+            devices.forEach(d => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span style="font-weight:600;color:var(--accent);">${d.brand}</span></td>
+                    <td><span style="font-family:monospace;font-size:0.85rem;">${d.model}</span></td>
+                    <td><span class="status-badge">${d.android_version}</span></td>
+                    <td>${d.ram_gb} GB</td>
+                    <td style="color:var(--text-muted);font-size:0.82rem;">${d.resolution}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        // ────────────────────────────────────────────────────
 
         // Initial Load
         fetchStats();
